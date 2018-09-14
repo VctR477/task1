@@ -1,0 +1,30 @@
+{
+  "name": "funbox",
+  "version": "1.0",
+  "description": "test task",
+  "main": "/src/js/index.js",
+  "scripts": {
+    "dev": "webpack-dev-server --mode=development --open",
+    "build": "webpack --mode=production"
+  },
+  "repository": "https://github.com/VctR477/task1.git",
+  "author": "vickli477@gmail.com",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "autoprefixer": "^9.1.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "css-loader": "^1.0.0",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "node-sass": "^4.9.2",
+    "path": "^0.12.7",
+    "postcss-loader": "^2.1.6",
+    "sass-loader": "^7.0.3",
+    "style-loader": "^0.21.0",
+    "webpack": "^4.16.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.4"
+  }
+}
