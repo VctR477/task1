@@ -1,11 +1,46 @@
-@import './variable';
+@import './variables';
+@import './mixins';
 
-#title {
-	color: $colorGreen;
+* {
 	box-sizing: border-box;
-	box-shadow: 0 5px 4px rgba(244, 0, 200, .3);
-	transform: translate(50%, 20px);
-	user-select: none;
+}
+
+body {
+	margin: 8px;
+}
+
+.route {
 	display: flex;
-	font-size: $fontSize;
+	width: 100%;
+	min-width: 320px;
+	max-width: 1280px;
+	margin: 0 auto;
+	background: gray;
+
+	@include mq(phone) {
+		flex-direction: column;
+	}
+
+	&__check-points {
+		width: 100%;
+		max-width: 400px;
+		flex-shrink: 0;
+
+		@include mq(phone) {
+			max-width: 100%;
+		}
+
+		height: 300px;
+		background: yellowgreen;
+	}
+
+	&__map {
+		border: 2px solid $blackColor;
+		width: calc(100% - 400px);
+		height: 400px;
+
+		@include mq(phone) {
+			width: 100%;
+		}
+	}
 }
