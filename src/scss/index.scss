@@ -1,0 +1,11 @@
+@import './variable';
+
+#title {
+	color: $colorGreen;
+	box-sizing: border-box;
+	box-shadow: 0 5px 4px rgba(244, 0, 200, .3);
+	transform: translate(50%, 20px);
+	user-select: none;
+	display: flex;
+	font-size: $fontSize;
+}
