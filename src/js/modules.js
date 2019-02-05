@@ -46,6 +46,8 @@ export const createNewPoint = (map, address) => {
 		// Добавляем первый найденный геообъект на карту.
 		map.geoObjects.add(firstGeoObject);
 
+		console.log(map.geoObjects.getIterator().getNext());
+
 		// Область видимости всех геообъектов на карет.
 		const bounds = map.geoObjects.getBounds();
 		
@@ -54,5 +56,28 @@ export const createNewPoint = (map, address) => {
 			// Проверяем наличие тайлов на данном масштабе.
 			checkZoomRange: true
 		});
+	});
+};
+
+/**
+ * Строит маршрут на карте
+ * 
+ * @param {Array} pointsArr - массив точек на карте
+ * @param {Object} map - объект карты
+ */
+export const createRoute = (pointsArr, map) => {
+
+	ymaps.route(pointsArr, {
+		mapStateAutoApply: true
+	}).then(function (route) {
+		route.getPaths().options.set({
+			// в балуне выводим только информацию о времени движения с учетом пробок
+			balloonContentBodyLayout: ymaps.templateLayoutFactory.createClass('$[properties.humanJamsTime]'),
+			// можно выставить настройки графики маршруту
+			strokeColor: '0000ffff',
+			opacity: 0.9
+		});
+		// добавляем маршрут на карту
+		map.geoObjects.add(route);
 	});
 };
