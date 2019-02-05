@@ -79,7 +79,8 @@ body {
 		cursor: pointer;
 	}
 
-	&__input:focus + &__label {
+	&__input:focus + &__label,
+	&__input:valid + &__label {
 		font-size: 14px;
 		line-height: 20px;
 		top: -10px;
