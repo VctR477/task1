@@ -77,9 +77,7 @@ const app = () => {
 			const address = target.getAttribute('data-address');
 			referencePoints = referencePoints.filter(item => item !== address);
 			POINTS_LIST_ELEM.removeChild(target.parentNode);
-			if (referencePoints.length) {
-				multiRoute.model.setReferencePoints(referencePoints);
-			}
+			multiRoute.model.setReferencePoints(referencePoints);
 		});
 	};
 	// вешаем обработчик события на выбор адреса
@@ -100,10 +98,16 @@ const app = () => {
 		addNewPoint(suggestView.state.get('items')[0].value);
 	});
 
-	multiRoute.events.add('boundschange', function() {
-		myMap.setBounds(multiRoute.getBounds(), {
-			checkZoomRange: true
-		});
+	multiRoute.events.add('boundschange', function () {
+		if (referencePoints.length) {
+			myMap.setBounds(multiRoute.getBounds(), {
+				checkZoomRange: true
+			});
+		} else {
+			myMap.setCenter([55.76, 37.64], 7, {
+				checkZoomRange: true
+			});
+		}
 	});
 };
 
