@@ -1,12 +1,13 @@
-const _createNewItemOfAddressList = (address) => {
+const POINTS_LIST_ELEM = document.getElementById('address-list');
+
+const _createNewItemOfAddressList = (address, index) => {
 	const removeBtnTemplate = `
 		<div class="address-list__item">
 			<span class="address-list__point-name">${address}</span>
-			<button class="address-list__remove-btn" type="button">X</button>
+			<button class="address-list__remove-btn" type="button" data-index="${index}">X</button>
 		</div>
 	`;
-	const listELem = document.getElementById('address-list');
-	listELem.insertAdjacentHTML('beforeend', removeBtnTemplate);
+	POINTS_LIST_ELEM.insertAdjacentHTML('beforeend', removeBtnTemplate);
 };
 
 
@@ -30,6 +31,18 @@ export const createNewPoint = (map, address) => {
 		// Получаем строку с адресом и выводим в иконке геообъекта.
 		firstGeoObject.properties.set('iconCaption', firstGeoObject.getAddressLine());
 
+		const geoObjCounter = map.geoObjects.getLength();
+		_createNewItemOfAddressList(address, geoObjCounter);
+
+		// вешаем обработчик собития на удаление
+		document.querySelector(`.address-list__remove-btn[data-index="${geoObjCounter}"]`).addEventListener('click', event => {
+			const target = event.currentTarget;
+			const idx = Number(target.getAttribute('data-index'));
+			const addressPoint = map.geoObjects.get(idx);
+			map.geoObjects.remove(addressPoint);
+			POINTS_LIST_ELEM.removeChild(target.parentNode);
+		});
+
 		// Добавляем первый найденный геообъект на карту.
 		map.geoObjects.add(firstGeoObject);
 
@@ -42,6 +55,4 @@ export const createNewPoint = (map, address) => {
 			checkZoomRange: true
 		});
 	});
-
-	_createNewItemOfAddressList(address);
 };

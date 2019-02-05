@@ -1,5 +1,16 @@
 import { createNewPoint } from './modules';
 
+const REMOVE_POINT_BTN_CLASS = 'address-list__remove-btn';
+
+const _bindEvents = () => {
+	document.getElementById('address-list').addEventListener('click', event => {
+		const target = event.target;
+		if (target.classList.contains(REMOVE_POINT_BTN_CLASS)) {
+			console.log(Number(target.getAttribute('data-index')));
+		}
+	});
+};
+
 const app = () => { 
 	// Создание карты.    
 	const myMap = new ymaps.Map('map', {
@@ -21,6 +32,8 @@ const app = () => {
 		const address = event.get('item').value;
 		createNewPoint(myMap, address);
 	});
+
+	_bindEvents();
 };
 
 export default app;
