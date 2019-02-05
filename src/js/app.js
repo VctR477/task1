@@ -1,4 +1,4 @@
-import { createNewPointOnMap } from './modules';
+import { createNewPoint } from './modules';
 
 const app = () => { 
 	// Создание карты.    
@@ -19,7 +19,7 @@ const app = () => {
 	// вешаем обработчик события на выбор адреса
 	suggestView.events.add('select', event => {
 		const address = event.get('item').value;
-		createNewPointOnMap(myMap, address);
+		createNewPoint(myMap, address);
 	});
 };
 
