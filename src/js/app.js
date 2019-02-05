@@ -1,3 +1,5 @@
+import { createNewPointOnMap } from './modules';
+
 const app = () => { 
 	// Создание карты.    
 	const myMap = new ymaps.Map('map', {
@@ -10,10 +12,14 @@ const app = () => {
 		// от 0 (весь мир) до 19.
 		zoom: 7
 	});
+
+	// подключаем попап с подсказками адресов для нашего инпута
 	const suggestView = new ymaps.SuggestView('add-new-point');
 
+	// вешаем обработчик события на выбор адреса
 	suggestView.events.add('select', event => {
-		console.log(event.get('item'));
+		const address = event.get('item').value;
+		createNewPointOnMap(myMap, address);
 	});
 };
 
