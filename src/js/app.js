@@ -1,6 +1,5 @@
 /**
  * TODO
- * 1. Первый в попапе по дефолту
  * 2. маркер без надписи
  * 3. другой балун
  * 4. перетаскивание списка
@@ -15,6 +14,7 @@
 
 // import { createNewPoint, createRoute } from './modules';
 
+const KEY_CODE_ENTER = 13;
 const POINTS_LIST_ELEM = document.getElementById('address-list');
 const ADDRESS_INPUT_ELEM = document.getElementById('add-new-point');
 
@@ -28,6 +28,7 @@ const _createNewItemOfAddressList = (address) => {
 	POINTS_LIST_ELEM.insertAdjacentHTML('beforeend', removeBtnTemplate);
 };
 
+let isSelect = false;
 let referencePoints = [];
 
 const app = () => { 
@@ -64,9 +65,7 @@ const app = () => {
 	// подключаем попап с подсказками адресов для нашего инпута
 	const suggestView = new ymaps.SuggestView('add-new-point');
 
-	// вешаем обработчик события на выбор адреса
-	suggestView.events.add('select', event => {
-		const address = event.get('item').value;
+	const addNewPoint = (address) => {
 		referencePoints.push(address);
 		multiRoute.model.setReferencePoints(referencePoints);
 		_createNewItemOfAddressList(address);
@@ -77,9 +76,28 @@ const app = () => {
 			const target = event.currentTarget;
 			const address = target.getAttribute('data-address');
 			referencePoints = referencePoints.filter(item => item !== address);
-			multiRoute.model.setReferencePoints(referencePoints);
 			POINTS_LIST_ELEM.removeChild(target.parentNode);
+			if (referencePoints.length) {
+				multiRoute.model.setReferencePoints(referencePoints);
+			}
 		});
+	};
+	// вешаем обработчик события на выбор адреса
+	suggestView.events.add('select', event => {
+		isSelect = true;
+		const address = event.get('item').value;
+		addNewPoint(address);
+	});
+
+	// на случай если пользователь ничего не выбрал, а просто нажал интер
+	ADDRESS_INPUT_ELEM.addEventListener('keypress', event => {
+		const val = event.currentTarget.value;
+		if (event.keyCode !== KEY_CODE_ENTER || !val) return;
+		if (isSelect) {
+			isSelect = false;
+			return;
+		};
+		addNewPoint(suggestView.state.get('items')[0].value);
 	});
 
 	multiRoute.events.add('boundschange', function() {

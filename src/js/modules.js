@@ -24,6 +24,7 @@ export const createNewPoint = (map, address) => {
 	}).then(function (res) {
 		// Выбираем первый результат геокодирования.
 		const firstGeoObject = res.geoObjects.get(0);
+
 		// Координаты геообъекта. (не использ!! пока оставлю)
 		const coords = firstGeoObject.geometry.getCoordinates();
 
@@ -45,8 +46,6 @@ export const createNewPoint = (map, address) => {
 
 		// Добавляем первый найденный геообъект на карту.
 		map.geoObjects.add(firstGeoObject);
-
-		console.log(map.geoObjects.getIterator().getNext());
 
 		// Область видимости всех геообъектов на карет.
 		const bounds = map.geoObjects.getBounds();
