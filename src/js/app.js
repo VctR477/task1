@@ -80,13 +80,14 @@ class RouteMap {
 		ADDRESS_INPUT_ELEM.value = '';
 
 		// вешаем обработчик собития на удаление
-		document.querySelector(`.address-list__remove-btn[data-address="${address}"]`).addEventListener('click', event => {
-			const target = event.currentTarget;
-			const address = target.getAttribute('data-address');
-			this.routePointsArr = this.routePointsArr.filter(item => item !== address);
-			POINTS_LIST_ELEM.removeChild(target.parentNode);
-			this.multiRoute.model.setReferencePoints(this.routePointsArr);
-		});
+		document.querySelector(`.address-list__remove-btn[data-address="${address}"]`)
+			.addEventListener('click', event => {
+				const target = event.currentTarget;
+				const address = target.getAttribute('data-address');
+				this.routePointsArr = this.routePointsArr.filter(item => item !== address);
+				POINTS_LIST_ELEM.removeChild(target.parentNode);
+				this.multiRoute.model.setReferencePoints(this.routePointsArr);
+			});
 	}
 
 	createNewItemOfAddressList(address) {
@@ -111,7 +112,7 @@ class RouteMap {
 		ADDRESS_INPUT_ELEM.addEventListener('keypress', event => {
 			const val = event.currentTarget.value;
 			if (event.keyCode !== KEY_CODE_ENTER || !val || this.suggestItemSelected) {
-				isSelect = false;
+				this.suggestItemSelected = false;
 				return;
 			}
 			const address = this.suggestView.state.get('items')[ 0 ].value;
@@ -129,6 +130,21 @@ class RouteMap {
 				});
 			}
 		});
+	}
+
+	changePointsView() {
+		// var yandexWayPoint = multiRoute.getWayPoints().get(1);
+		// // Создаем балун у метки второй точки.
+		// ymaps.geoObject.addon.balloon.get(yandexWayPoint);
+		// yandexWayPoint.options.set({
+		// 	preset: "islands#grayStretchyIcon",
+		// 	iconContentLayout: ymaps.templateLayoutFactory.createClass(
+		// 		'<span style="color: red;">Я</span>ндекс'
+		// 	),
+		// 	balloonContentLayout: ymaps.templateLayoutFactory.createClass(
+		// 		'{{ properties.address|raw }}'
+		// 	)
+		// });
 	}
 }
 
