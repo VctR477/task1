@@ -130,21 +130,28 @@ class RouteMap {
 				});
 			}
 		});
+
+		this.multiRoute.model.events.add('requestsuccess', () => {
+			const length = this.routePointsArr.length;
+			const wayPoints = this.multiRoute.getWayPoints();
+			for (let i = 0; i < length; i++) {
+				const target = wayPoints.get(i);
+				this.changePointsView(target, i);
+			};
+		});
 	}
 
-	changePointsView() {
-		// var yandexWayPoint = multiRoute.getWayPoints().get(1);
-		// // Создаем балун у метки второй точки.
-		// ymaps.geoObject.addon.balloon.get(yandexWayPoint);
-		// yandexWayPoint.options.set({
-		// 	preset: "islands#grayStretchyIcon",
-		// 	iconContentLayout: ymaps.templateLayoutFactory.createClass(
-		// 		'<span style="color: red;">Я</span>ндекс'
-		// 	),
-		// 	balloonContentLayout: ymaps.templateLayoutFactory.createClass(
-		// 		'{{ properties.address|raw }}'
-		// 	)
-		// });
+	changePointsView(yandexWayPoint, index) {
+		ymaps.geoObject.addon.balloon.get(yandexWayPoint);
+		yandexWayPoint.options.set({
+			preset: 'islands#redStretchyIcon',
+			iconContentLayout: ymaps.templateLayoutFactory.createClass(
+				`<span style="color: #333; font-weight: bold;">${index + 1}</span>`
+			),
+			balloonContentLayout: ymaps.templateLayoutFactory.createClass(
+				'{{ properties.address|raw }}'
+			)
+		});
 	}
 }
 
