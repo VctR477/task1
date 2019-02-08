@@ -1,8 +1,6 @@
 /**
  * TODO
  * 1. список меняется при измении карты
- * 2. маркер без надписи
- * 3. другой балун
  * 4. перетаскивание списка
  * 5. рефакторинг
  * 6. тесты
@@ -20,7 +18,12 @@ class RouteMap {
 		this.multiRoute = null;
 		this.suggestView = null;
 		this.suggestItemSelected = false;
-		this.routePointsArr = [];
+		this.routePointsArr = [
+			'Россия, Смоленск, улица Нормандия-Неман, 25',
+			'Россия, Смоленск, улица Кирова, 55А',
+			'Россия, Смоленск, улица Крупской, 64',
+			'Россия, Смоленск, улица Рыленкова, 57'
+		];
 		this.init();
 	}
 
@@ -44,9 +47,10 @@ class RouteMap {
 	}
 
 	createMultiRoute() {
+		const pointsArr = this.routePointsArr;
 		this.multiRoute = new ymaps.multiRouter.MultiRoute(
 			{
-				referencePoints: []
+				referencePoints: pointsArr
 			},
 			{
 				boundsAutoApply: true,
@@ -55,11 +59,21 @@ class RouteMap {
 		
 			}
 		);
+		const route = this.multiRoute;
 		// Включение режима редактирования.
-		this.multiRoute.editor.start();
+		route.editor.start();
 		
 		// Добавление маршрута на карту.
-		this.myMap.geoObjects.add(this.multiRoute);
+		this.myMap.geoObjects.add(route);
+
+		// Добавляем кнопки удаления, если маршрут первоначально не пустой 
+		if (pointsArr.length) {
+			for (let i = 0; i < pointsArr.length; i++) {
+				const address = pointsArr[ i ];
+				this.createNewItemOfAddressList(address);
+				this.addEventListenerForRemoveBtn(address);
+			}
+		}
 	}
 
 	createSuggestView() {
@@ -78,16 +92,7 @@ class RouteMap {
 		// добавляем адрес в список на странице
 		this.createNewItemOfAddressList(address);
 		ADDRESS_INPUT_ELEM.value = '';
-
-		// вешаем обработчик собития на удаление
-		document.querySelector(`.address-list__remove-btn[data-address="${address}"]`)
-			.addEventListener('click', event => {
-				const target = event.currentTarget;
-				const address = target.getAttribute('data-address');
-				this.routePointsArr = this.routePointsArr.filter(item => item !== address);
-				POINTS_LIST_ELEM.removeChild(target.parentNode);
-				this.multiRoute.model.setReferencePoints(this.routePointsArr);
-			});
+		this.addEventListenerForRemoveBtn(address);
 	}
 
 	createNewItemOfAddressList(address) {
@@ -98,6 +103,18 @@ class RouteMap {
 			</div>
 		`;
 		POINTS_LIST_ELEM.insertAdjacentHTML('beforeend', removeBtnTemplate);
+	}
+
+	addEventListenerForRemoveBtn(address) {
+		// вешаем обработчик собития на удаление
+		document.querySelector(`.address-list__remove-btn[data-address="${address}"]`)
+			.addEventListener('click', event => {
+				const target = event.currentTarget;
+				const address = target.getAttribute('data-address');
+				this.routePointsArr = this.routePointsArr.filter(item => item !== address);
+				POINTS_LIST_ELEM.removeChild(target.parentNode);
+				this.multiRoute.model.setReferencePoints(this.routePointsArr);
+			});
 	}
 
 	bindEvents() {
@@ -131,6 +148,7 @@ class RouteMap {
 			}
 		});
 
+		// наш маршрут изменился
 		this.multiRoute.model.events.add('requestsuccess', () => {
 			const length = this.routePointsArr.length;
 			const wayPoints = this.multiRoute.getWayPoints();
