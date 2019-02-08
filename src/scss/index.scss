@@ -89,6 +89,7 @@ body {
 }
 
 .address-list {
+	padding-left: 0;
 	padding-right: 10px;
 
 	@include mq(phone) {
@@ -107,11 +108,20 @@ body {
 		margin-bottom: 6px;
 		padding-right: 6px;
 		border: 1px dashed $grayColor;
-
-		&:hover {
+		user-select: none;
+		cursor: move;
+		transition: all .3s;
+		
+		&.gu-transit {
 			border-style: solid;
 			background: white;
 			box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.4);
+		}
+
+		&:hover {
+			// border-style: solid;
+			// background: white;
+			// box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.4);
 		}
 	}
 
@@ -137,4 +147,8 @@ body {
 			background: $lightGrayColor;
 		}
 	}
+}
+
+.gu-mirror {
+	display: none;
 }

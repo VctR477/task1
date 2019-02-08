@@ -7,6 +7,8 @@
  * 7. реакт
  * 8. тесты для реакт
  */
+import DragonDrop from 'drag-on-drop';
+import toArray from 'lodash-es/toArray';
 
 const KEY_CODE_ENTER = 13;
 const POINTS_LIST_ELEM = document.getElementById('address-list');
@@ -97,10 +99,10 @@ class RouteMap {
 
 	createNewItemOfAddressList(address) {
 		const removeBtnTemplate = `
-			<div class="address-list__item">
+			<li class="address-list__item">
 				<span class="address-list__point-name">${address}</span>
 				<button class="address-list__remove-btn" type="button" data-address="${address}">X</button>
-			</div>
+			</li>
 		`;
 		POINTS_LIST_ELEM.insertAdjacentHTML('beforeend', removeBtnTemplate);
 	}
@@ -150,6 +152,7 @@ class RouteMap {
 
 		// наш маршрут изменился
 		this.multiRoute.model.events.add('requestsuccess', () => {
+			console.log(23);
 			const length = this.routePointsArr.length;
 			const wayPoints = this.multiRoute.getWayPoints();
 			for (let i = 0; i < length; i++) {
@@ -157,6 +160,8 @@ class RouteMap {
 				this.changePointsView(target, i);
 			};
 		});
+
+		this.initDrag();
 	}
 
 	changePointsView(yandexWayPoint, index) {
@@ -170,6 +175,26 @@ class RouteMap {
 				'{{ properties.address|raw }}'
 			)
 		});
+	}
+
+	initDrag() {
+		const container = document.getElementById('address-list');
+		const options = {
+			item: '.address-list__item',
+			handle: false,
+			announcement: {
+				dropped: () => {
+					//опытным путем было выявлено что это событие происходит после перестановки элементов
+					this.routePointsArr = this.getPointsArrayFromDOM();
+					this.multiRoute.model.setReferencePoints(this.routePointsArr);
+				},
+			}
+		};
+		const dragon = new DragonDrop(container, options);
+	}
+
+	getPointsArrayFromDOM() {
+		return toArray(document.querySelectorAll('.address-list__point-name')).map(elem => elem.innerText);
 	}
 }
 

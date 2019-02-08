@@ -18,8 +18,14 @@ const conf = {
 		rules: [
 			{
 				test: /\.js$/,
-				loader: 'babel-loader',
 				exclude: '/node_modules/',
+				use: 'babel-loader',
+				use: {
+					loader: 'babel-loader',
+					options: {
+						presets: ['stage-0'],
+					}
+				}
 			},
 			{
 				test: /\.s?css$/,
