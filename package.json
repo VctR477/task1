@@ -1,13 +1,17 @@
 {
   "name": "funbox",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "test task",
   "main": "/src/js/index.js",
   "scripts": {
     "dev": "webpack-dev-server --mode=development --open",
-    "build": "webpack --mode=production"
+    "build": "webpack --mode=production",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": "https://github.com/VctR477/task1.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VctR477/task1.git"
+  },
   "author": "vickli477@gmail.com",
   "license": "MIT",
   "private": false,
@@ -17,7 +21,7 @@
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
     "css-loader": "^1.0.0",
-    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "mini-css-extract-plugin": "^0.7.0",
     "node-sass": "^4.9.2",
     "path": "^0.12.7",
     "postcss-loader": "^2.1.6",
@@ -31,5 +35,9 @@
     "babel-preset-stage-0": "^6.24.1",
     "drag-on-drop": "^3.3.2",
     "lodash-es": "^4.17.11"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/VctR477/task1/issues"
+  },
+  "homepage": "https://github.com/VctR477/task1#readme"
 }

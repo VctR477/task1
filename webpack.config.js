@@ -1,5 +1,5 @@
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const conf = {
 	context: path.resolve(__dirname,'./src/js'),
@@ -19,7 +19,6 @@ const conf = {
 			{
 				test: /\.js$/,
 				exclude: '/node_modules/',
-				use: 'babel-loader',
 				use: {
 					loader: 'babel-loader',
 					options: {
@@ -28,16 +27,25 @@ const conf = {
 				}
 			},
 			{
-				test: /\.s?css$/,
-				use: ExtractTextPlugin.extract({
-					fallback: 'style-loader',
-					use: ['css-loader', 'postcss-loader', 'sass-loader']
-				})
+				test: /\.(sa|sc|c)ss$/,
+				use: [
+					{
+						loader: MiniCssExtractPlugin.loader,
+						options: {
+							hmr: process.env.NODE_ENV === 'development',
+						},
+					},
+					'css-loader',
+					'postcss-loader',
+					'sass-loader',
+				],
 			},
 		]
 	},
 	plugins: [
-		new ExtractTextPlugin('[name].css'),
+		new MiniCssExtractPlugin({
+			filename: '[name].css',
+		}),
 	]
 };
 
