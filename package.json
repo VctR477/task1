@@ -34,7 +34,7 @@
   "dependencies": {
     "babel-preset-stage-0": "^6.24.1",
     "drag-on-drop": "^3.3.2",
-    "lodash-es": "^4.17.11"
+    "lodash-es": "^4.17.14"
   },
   "bugs": {
     "url": "https://github.com/VctR477/task1/issues"
